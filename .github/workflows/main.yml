@@ -1,0 +1,27 @@
+name: Build Windows EXE
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+          pip install customtkinter yt-dlp pyinstaller Pillow
+
+      - name: Build EXE
+        run: pyinstaller --noconsole --onefile yt_app.py
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: My-Downloader-EXE
+          path: dist/yt_app.exe
